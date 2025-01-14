@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add File</title>
+</head>
+<body>
+<div th:insert="~{menubar}"></div>
+<div class="row justify-content-center">
+    <form th:action="@{/book/add-file/{bookId}(bookId=${bookId})}" method="post" enctype="multipart/form-data">
+        <label for="file">Загрузить файл:</label>
+        <input type="file" name="file" id="file" required>
+        <input type="hidden" name="bookId" id="bookId" th:value="${bookId}">
+        <br><br>
+        <button type="submit">Сохранить</button>
+    </form>
+</div>
+</body>
+</html>

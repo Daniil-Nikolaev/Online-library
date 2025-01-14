@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+<div th:insert="~{menubar}"></div>
+<div class="container text-center col-3">
+    <div class="row justify-content-center">
+        <form th:action="@{/account/login}" method="post">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Enter username</label>
+                <input type="text" class="form-control" name="username" id="exampleInputEmail1" aria-describedby="emailHelp"></div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label"> Enter password</label>
+                <input type="password"  name="password" class="form-control" id="exampleInputPassword1">
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

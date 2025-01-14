@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+<div th:insert="~{menubar}"></div>
+<div class="container text-center col-3">
+    <h1 th:text="'Hello,'+ ${account.getUsername}"></h1>
+    <h3 th:text="'Your authorities:'+ ${account.getAuthorities()}"></h3>
+    <a class="btn btn-primary" href="/book/add-title" role="button">Add book</a>
+    <form th:action="@{/account/profile}" method="post">
+            <button type="submit" class="btn btn-primary">Become a admin</button>
+    </form>
+    <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    My books
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                <ul th:each="book : ${account.getBooks()}">
+                    <li>
+                        <div class="card" style="width: 18rem;">
+                            <img th:src="${book.getImage()}" class="card-img-top" >
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${book.getTitle()}"></h5>
+                                <p class="card-text" th:text="${book.getDescription()}"></p>
+                                <a th:href="@{/book/{bookId}(bookId=${book.getId()})}" class="btn btn-primary">Learn more</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book</title>
+</head>
+<body>
+<div th:insert="~{menubar}"></div>
+<div class="container text-center col-5"> </div>
+<h1 th:text="${book.getTitle()}"></h1>
+<img th:src="${book.getImage()}" class="w-10">
+<h3 th:text="${book.getAuthor()}"></h3>
+<h3 th:text="${book.getPublisher()}"></h3>
+<h4 th:text="'Pages:'+ ${book.getPages()}"></h4>
+<h4 th:text="'Genre:'+ ${book.getGenre()}"></h4>
+<h4 th:text="'Rating:'+ ${book.getRating()}"></h4>
+<h3 th:text="${book.getDescription()}"></h3>
+<br>
+<a th:href="@{/book/{bookId}/read(bookId=${book.getId()})}" class="btn btn-primary">Read</a>
+<br>
+<form th:action="@{/account/add-book}" method="post">
+    <input type="hidden" name="bookId" id="bookId" th:value="${book.getId()}">
+    <button type="submit" class="btn btn-primary">Add book in my collection </button>
+</form>
+<br>
+<form th:action="@{/book/{bookId}/delete(bookId=${book.getId()})}" method="post">
+    <input type="hidden" name="bookId1" id="bookId1" th:value="${book.getId()}">
+    <button type="submit" class="btn btn-primary">Delete book</button>
+</form>
+
+</body>
+</html>
