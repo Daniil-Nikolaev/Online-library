@@ -4,7 +4,7 @@ import by.tms.myonlinelibrary.entity.Account;
 import by.tms.myonlinelibrary.entity.Book;
 import by.tms.myonlinelibrary.repository.AccountRepository;
 import by.tms.myonlinelibrary.repository.BookRepository;
-import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,11 +44,11 @@ public class BookService {
                 String fileName = file.getOriginalFilename();
 
                 if (contentType != null && contentType.startsWith("text/")) {
-                    book.setContent(file.getBytes()); // Сохраняем текстовый файл как есть
+                    book.setContent(file.getBytes());
                 } else if (fileName != null && fileName.endsWith(".pdf")) {
-                    book.setContent(parsePdf(file)); // Обрабатываем PDF
+                    book.setContent(parsePdf(file));
                 } else if (fileName != null && fileName.endsWith(".fb2")) {
-                    book.setContent(parseFb2(file)); // Обрабатываем FB2
+                    book.setContent(parseFb2(file));
                 }else {
                     throw new IllegalArgumentException("Unsupported file type");
                 }
@@ -65,11 +65,13 @@ public class BookService {
     }
 
    public Book getBookById(Long bookId) {
-        return bookRepository.findById(bookId).get();
+       return bookRepository.findById(bookId)
+               .orElseThrow(() -> new EntityNotFoundException("Book with ID " + bookId + " not found."));
    }
 
    public String readBook(Long bookId) {
-        var book=bookRepository.findById(bookId).get();
+        var book=bookRepository.findById(bookId).
+                orElseThrow(() -> new EntityNotFoundException("Book with ID " + bookId + " not found."));
         String content = new String(book.getContent(), StandardCharsets.UTF_8);
         return content;
    }
@@ -80,8 +82,8 @@ public class BookService {
 
         for (Account account : accountRepository.findAll()) {
             if (account.getBooks().contains(book)) {
-                account.getBooks().remove(book); // Удаляем связь
-                accountRepository.save(account); // Сохраняем изменения
+                account.getBooks().remove(book);
+                accountRepository.save(account);
             }
         }
         bookRepository.delete(book);

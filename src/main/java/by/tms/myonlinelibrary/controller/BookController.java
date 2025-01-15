@@ -2,6 +2,7 @@ package by.tms.myonlinelibrary.controller;
 
 import by.tms.myonlinelibrary.entity.Book;
 import by.tms.myonlinelibrary.service.BookService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,14 +50,26 @@ public class BookController {
     @GetMapping("/{bookId}")
     public String show(@PathVariable("bookId") Long bookId, Model model) {
         model.addAttribute("book", bookService.getBookById(bookId));
-        return "showBook";
+        try {
+            Book book = bookService.getBookById(bookId);
+            model.addAttribute("book", book);
+            return "showBook";
+        } catch (EntityNotFoundException ex) {
+            model.addAttribute("error", ex.getMessage());
+            return "redirect: /";
+        }
     }
 
     @GetMapping("/{bookId}/read")
     public String read(@PathVariable("bookId") Long bookId, Model model) {
-        String content=  bookService.readBook(bookId);
-        model.addAttribute("content", content);
-        return "readBook";
+        try {
+            String content=  bookService.readBook(bookId);
+            model.addAttribute("content", content);
+            return "readBook";
+        } catch (EntityNotFoundException ex) {
+            model.addAttribute("error", ex.getMessage());
+            return "redirect: /";
+        }
     }
 
     @PostMapping("/{bookId}/delete")
