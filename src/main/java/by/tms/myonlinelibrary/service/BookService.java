@@ -9,6 +9,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -84,6 +85,19 @@ public class BookService {
             }
         }
         bookRepository.delete(book);
+    }
+
+
+    @Transactional
+    public List<Book> searchBook(String criteriy, String keyword) {
+        switch (criteriy) {
+            case "title":
+                return bookRepository.findByTitle(keyword);
+            case "author":
+                return bookRepository.findByAuthor(keyword);
+            default:
+                throw new IllegalArgumentException("No result");
+        }
     }
 
 

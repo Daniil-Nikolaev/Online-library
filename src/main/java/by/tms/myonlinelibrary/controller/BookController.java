@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-
+import java.util.List;
 
 
 @Controller
@@ -63,5 +63,18 @@ public class BookController {
     public String delete(@PathVariable("bookId") Long bookId) {
         bookService.deleteBook(bookId);
         return "redirect:/book/all";
+    }
+
+    @GetMapping("/search")
+    public String search(Model model) {
+        return "search";
+    }
+
+    @PostMapping("/search")
+    public String search(@RequestParam String critery,@RequestParam String keyword,Model model) {
+        List<Book> books = bookService.searchBook(critery, keyword);
+        model.addAttribute("books",books);
+        return"/search";
+
     }
 }
