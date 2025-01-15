@@ -3,10 +3,12 @@ package by.tms.myonlinelibrary.controller;
 import by.tms.myonlinelibrary.dto.AccountDto;
 import by.tms.myonlinelibrary.entity.Account;
 import by.tms.myonlinelibrary.service.AccountService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -22,9 +24,19 @@ public class AccountController {
     }
 
     @PostMapping("/registration")
-    public String registration(AccountDto accountDto) {
-        accountService.create(accountDto);
-        return "redirect:/";
+    public String registration(@Valid @ModelAttribute AccountDto accountDto, BindingResult bindingResult,Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            return "reg";
+        }
+        try {
+            accountService.create(accountDto);
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+            return "reg";
+        }
+
+        return "redirect:/account/login";
     }
 
     @GetMapping("/login")

@@ -5,15 +5,18 @@ import by.tms.myonlinelibrary.entity.Account;
 import by.tms.myonlinelibrary.entity.Role;
 import by.tms.myonlinelibrary.repository.AccountRepository;
 import by.tms.myonlinelibrary.repository.BookRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
+
 
 @Service
+@Validated
 public class AccountService implements UserDetailsService {
 
     @Autowired
@@ -24,7 +27,11 @@ public class AccountService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public void create(AccountDto accountDto) {
+    public void create(@Valid AccountDto accountDto) {
+        if (accountRepository.existsByUsername(accountDto.getUsername())) {
+            throw new IllegalArgumentException("Username already exists");
+        }
+
         Account account = new Account();
         account.setUsername(accountDto.getUsername());
         account.setPassword(passwordEncoder.encode(accountDto.getPassword()));
@@ -50,7 +57,6 @@ public class AccountService implements UserDetailsService {
     public void addBook(Account account,Long bookId){
         var book = bookRepository.findById(bookId).get();
         account.getBooks().add(book);
-        System.out.println(account.getBooks());
         accountRepository.save(account);
     }
 }

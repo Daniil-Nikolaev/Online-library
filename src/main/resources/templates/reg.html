@@ -8,16 +8,19 @@
 <div th:insert="~{menubar}"></div>
 <div class="container text-center col-3">
     <div class="row justify-content-center">
-    <form th:action="@{/account/registration}" method="post">
-        <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Create username</label>
-            <input type="text" class="form-control" name="username" id="exampleInputEmail1" aria-describedby="emailHelp"></div>
-        <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label"> Create password</label>
-            <input type="password"  name="password" class="form-control" id="exampleInputPassword1">
+        <div class="alert alert-danger" role="alert" th:if="${error}">
+            <p th:text="${error}"></p>
         </div>
-        <button type="submit" class="btn btn-primary">Registration</button>
-    </form>
+        <form th:action="@{/account/registration}" method="post">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Create username (from 3 to 20 characters)</label>
+                <input type="text" class="form-control" name="username" id="exampleInputEmail1" aria-describedby="emailHelp"></div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label"> Create password (from 8 to 30 characters)</label>
+                <input type="password"  name="password" class="form-control" id="exampleInputPassword1">
+            </div>
+            <button type="submit" class="btn btn-primary">Registration</button>
+        </form>
     </div>
 </div>
 </body>
