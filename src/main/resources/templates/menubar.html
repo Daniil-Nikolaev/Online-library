@@ -30,13 +30,11 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/account/login">Login</a>
                 </li>
-                <li class="nav-item">
-                    <form th:action="@{/account/logout}" method="post">
-                        <button type="submit" class="btn btn-primary">Logout</button>
-                    </form>
-                </li>
             </ul>
         </ul>
+        <form th:action="@{/account/logout}" method="post">
+            <button type="submit" class="btn btn-primary">Logout</button>
+        </form>
     </div>
 </nav>
 

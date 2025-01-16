@@ -8,11 +8,16 @@
 <div th:insert="~{menubar}"></div>
 <div class="container text-center col-3">
     <h1 th:text="'Hello,'+ ${account.getUsername}"></h1>
+    <br>
     <h3 th:text="'Your authorities:'+ ${account.getAuthorities()}"></h3>
+    <br>
     <a class="btn btn-primary" href="/book/add-title" role="button">Add book</a>
+    <br>
+    <br>
     <form th:action="@{/account/profile}" method="post">
             <button type="submit" class="btn btn-primary">Become a admin</button>
     </form>
+    <br>
     <div class="accordion" id="accordionExample">
         <div class="accordion-item">
             <h2 class="accordion-header">

@@ -6,7 +6,7 @@
 </head>
 <body>
 <div th:insert="~{menubar}"></div>
-<div class="container text-center col-5"> </div>
+<div class="container text-center col-3 ">
 <h1 th:text="${book.getTitle()}"></h1>
 <img th:src="${book.getImage()}" class="w-10">
 <h3 th:text="${book.getAuthor()}"></h3>
@@ -18,15 +18,16 @@
 <br>
 <a th:href="@{/book/{bookId}/read(bookId=${book.getId()})}" class="btn btn-primary">Read</a>
 <br>
-<form th:action="@{/account/add-book}" method="post">
-    <input type="hidden" name="bookId" id="bookId" th:value="${book.getId()}">
-    <button type="submit" class="btn btn-primary">Add book in my collection </button>
-</form>
+    <br>
+    <form th:action="@{/book/{bookId}/delete(bookId=${book.getId()})}" method="post">
+        <input type="hidden" name="bookId1" id="bookId1" th:value="${book.getId()}">
+        <button type="submit" class="btn btn-primary">Delete book</button>
+    </form>
 <br>
-<form th:action="@{/book/{bookId}/delete(bookId=${book.getId()})}" method="post">
-    <input type="hidden" name="bookId1" id="bookId1" th:value="${book.getId()}">
-    <button type="submit" class="btn btn-primary">Delete book</button>
-</form>
-
+    <form th:action="@{/account/add-book}" method="post">
+        <input type="hidden" name="bookId" id="bookId" th:value="${book.getId()}">
+        <button type="submit" class="btn btn-primary">Add book in my collection </button>
+    </form>
+</div>
 </body>
 </html>

@@ -6,22 +6,22 @@
 </head>
 <body>
 <div th:insert="~{menubar}"></div>
-<div class="row justify-content-center">
+<div class="container text-center col-3 ">
             <form th:action="@{/book/add-title}" method="post">
-                <label for="title">Add title:</label>
-                <input type="text" name="title" id="title" required>
+                <label for="title" class="form-label">Add title:</label>
+                <input type="text" name="title" class="form-control" id="title" required>
                 <br>
-                <label for="author">Add author:</label>
-                <input type="text" name="author" id="author" required>
+                <label for="author" class="form-label">Add author:</label>
+                <input type="text" name="author" class="form-control" id="author" required>
                 <br>
-                <label for="publisher">Add publisher:</label>
-                <input type="text" name="publisher" id="publisher" required>
+                <label for="publisher" class="form-label">Add publisher:</label>
+                <input type="text" name="publisher" class="form-control" id="publisher" required>
                 <br>
-                <label for="pages">Add the number of pages:</label>
-                <input type="number" name="pages" id="pages" required>
+                <label for="pages" class="form-label">Add the number of pages:</label>
+                <input type="number" name="pages" class="form-control" id="pages" required>
                 <br>
-                <label for="genre">Genre:</label>
-                <select id="genre" name="genre">
+                <label for="genre" class="form-label">Genre:</label>
+                <select id="genre"  class="form-select" name="genre">
                     <option value="NOVEL">Novel</option>
                     <option value="DETECTIVE">Detective</option>
                     <option value="ACTION">Action</option>
@@ -33,17 +33,17 @@
                     <option value="FANTASY">Fantasy</option>
                 </select>
                 <br>
-                <label for="rating">Add a rating in your opinion:</label>
-                <input type="text" name="rating" id="rating" required>
+                <label for="rating" class="form-label">Add a rating in your opinion:</label>
+                <input type="text" name="rating" class="form-control" id="rating" required>
                 <br>
-                <label for="description">Описание:</label>
-                <textarea name="description" id="description" required></textarea>
+                <label for="description" class="form-label">Описание:</label>
+                <textarea name="description" class="form-control" id="description" required></textarea>
                 <br>
                 <br>
-                <label for="image">Add a cover:</label>
-                <input type="text" name="image" id="image" required>
+                <label for="image" class="form-label">Add a cover:</label>
+                <input type="text" name="image" class="form-control" id="image" required>
                 <br>
-                <button type="submit">Сохранить</button>
+                <button type="submit" class="btn btn-primary mb-3">Сохранить</button>
             </form>
 </div>
 </body>
