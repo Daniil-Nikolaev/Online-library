@@ -8,6 +8,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -77,16 +80,28 @@ public class BookService {
    }
 
 
-    public void deleteBook(Long bookId) {
+    public void deleteBook(Long bookId,Account account) {
         var book=bookRepository.findById(bookId).get();
 
-        for (Account account : accountRepository.findAll()) {
-            if (account.getBooks().contains(book)) {
-                account.getBooks().remove(book);
-                accountRepository.save(account);
+        for (Account acc : accountRepository.findAll()) {
+            if (acc.getBooks().contains(book)) {
+                acc.getBooks().remove(book);
+                accountRepository.save(acc);
             }
         }
         bookRepository.delete(book);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof Account) {
+            Account updatedAccount = accountRepository.findById(account.getId())
+                    .orElseThrow(() -> new RuntimeException("Account not found"));
+            UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(
+                    updatedAccount,
+                    authentication.getCredentials(),
+                    updatedAccount.getAuthorities()
+            );
+            SecurityContextHolder.getContext().setAuthentication(newAuth);
+        }
     }
 
 

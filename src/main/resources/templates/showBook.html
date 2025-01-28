@@ -19,10 +19,12 @@
 <a th:href="@{/book/{bookId}/read(bookId=${book.getId()})}" class="btn btn-primary">Read</a>
 <br>
     <br>
-    <form th:action="@{/book/{bookId}/delete(bookId=${book.getId()})}" method="post">
-        <input type="hidden" name="bookId1" id="bookId1" th:value="${book.getId()}">
-        <button type="submit" class="btn btn-primary">Delete book</button>
-    </form>
+    <div th:if="${account.authorities.contains(T(by.tms.myonlinelibrary.entity.Role).ROLE_ADMIN)}">
+        <form th:action="@{/book/{bookId}/delete(bookId=${book.getId()})}" method="post">
+            <input type="hidden" name="bookId1" id="bookId1" th:value="${book.getId()}">
+            <button type="submit" class="btn btn-primary">Delete book</button>
+        </form>
+    </div>
 <br>
     <form th:action="@{/account/add-book}" method="post">
         <input type="hidden" name="bookId" id="bookId" th:value="${book.getId()}">

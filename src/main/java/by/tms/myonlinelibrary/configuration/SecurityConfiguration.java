@@ -1,6 +1,5 @@
 package by.tms.myonlinelibrary.configuration;
 
-import by.tms.myonlinelibrary.entity.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,7 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import static by.tms.myonlinelibrary.entity.Role.ROLE_USER;
 
 @Configuration
 @EnableWebSecurity
@@ -23,7 +21,10 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers("/book/add-title","book/add-file/{bookId}").hasAuthority("ROLE_ADMIN")
                         .requestMatchers( "/","/account/registration", "/account/login").permitAll()
+                        .requestMatchers("/book/all","/book/{bookId}").permitAll()
+
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())

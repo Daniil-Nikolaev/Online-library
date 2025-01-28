@@ -7,6 +7,9 @@ import by.tms.myonlinelibrary.repository.AccountRepository;
 import by.tms.myonlinelibrary.repository.BookRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -43,6 +46,12 @@ public class AccountService implements UserDetailsService {
         account.getAuthorities().clear();
         account.getAuthorities().add(Role.ROLE_ADMIN);
         accountRepository.save(account);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication newAuth = new UsernamePasswordAuthenticationToken(
+                account, authentication.getCredentials(), account.getAuthorities()
+        );
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
     }
 
     @Override
@@ -58,5 +67,17 @@ public class AccountService implements UserDetailsService {
         var book = bookRepository.findById(bookId).get();
         account.getBooks().add(book);
         accountRepository.save(account);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof Account) {
+            Account updatedAccount = accountRepository.findById(account.getId())
+                    .orElseThrow(() -> new RuntimeException("Account not found"));
+            UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(
+                    updatedAccount,
+                    authentication.getCredentials(),
+                    updatedAccount.getAuthorities()
+            );
+            SecurityContextHolder.getContext().setAuthentication(newAuth);
+        }
     }
 }

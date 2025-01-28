@@ -8,11 +8,11 @@
 <div th:insert="~{menubar}"></div>
 <div class="container text-center col-3 ">
     <form th:action="@{/book/add-file/{bookId}(bookId=${bookId})}" method="post" enctype="multipart/form-data">
-        <label for="file" class="form-label">Загрузить файл:</label>
+        <label for="file" class="form-label">Add file (txt,fb2,PDF):</label>
         <input type="file" name="file" class="form-control" id="file" required>
         <input type="hidden" name="bookId" id="bookId" th:value="${bookId}">
         <br><br>
-        <button type="submit" class="btn btn-primary mb-3">Сохранить</button>
+        <button type="submit" class="btn btn-primary mb-3">Save</button>
     </form>
 </div>
 </body>

@@ -1,9 +1,11 @@
 package by.tms.myonlinelibrary.controller;
 
+import by.tms.myonlinelibrary.entity.Account;
 import by.tms.myonlinelibrary.entity.Book;
 import by.tms.myonlinelibrary.service.BookService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -48,11 +50,13 @@ public class BookController {
     }
 
     @GetMapping("/{bookId}")
-    public String show(@PathVariable("bookId") Long bookId, Model model) {
-        model.addAttribute("book", bookService.getBookById(bookId));
+    public String show(@PathVariable("bookId") Long bookId,
+                       @AuthenticationPrincipal Account account,
+                       Model model) {
         try {
             Book book = bookService.getBookById(bookId);
             model.addAttribute("book", book);
+            model.addAttribute(account);
             return "showBook";
         } catch (EntityNotFoundException ex) {
             model.addAttribute("error", ex.getMessage());
@@ -73,8 +77,8 @@ public class BookController {
     }
 
     @PostMapping("/{bookId}/delete")
-    public String delete(@PathVariable("bookId") Long bookId) {
-        bookService.deleteBook(bookId);
+    public String delete(@PathVariable("bookId") Long bookId,@AuthenticationPrincipal Account account) {
+        bookService.deleteBook(bookId,account);
         return "redirect:/book/all";
     }
 
