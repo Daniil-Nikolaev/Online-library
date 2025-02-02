@@ -3,11 +3,13 @@ package by.tms.myonlinelibrary.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
 
 @Data
 @ToString
+@AllArgsConstructor
 public class AccountDto {
 
     @NotNull
